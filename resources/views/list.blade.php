@@ -16,7 +16,7 @@
     </nav>
     <main>
         <div>
-            <table id="product_list" class="display">
+            <table id="listmain" class="display">
                 <thead>
                     <tr>
                         <th>帳號</th>
@@ -33,12 +33,18 @@
                         <tr id='list{{ $data->id }}'>
                             <td>{{ $data->account ?? '' }}</td>
                             <td>{{ $data->name ?? '' }}</td>
-                            <td>{{ $data->gender ?? '' }}</td>
+                            <td>@if ($data->gender == 0)
+                                {{'女'}}
+                                @elseif ($data->gender == 1)
+                                {{'男'}}
+                            @endif</td>
                             <td>{{ $data->birthday ?? '' }}</td>
                             <td>{{ $data->mail ?? '' }}</td>
                             <td>{{ $data->note ?? '' }}</td>
                             <td>
-                                <button class="btn btn-success" onclick="location.href='/product/edit/'">編輯</button>
+                                <a href="/edit/{{$data->id}}">
+                                    <button class="btn btn-success">編輯</button>
+                                </a>
                                 <button class="delete" onclick="deldata({{ $data->id }})">刪除</button>
                             </td>
                         </tr>
@@ -48,7 +54,9 @@
         </div>
     </main>
     <footer>
-        <button type="submit">返回註冊頁</button>
+        <a href="/">
+            <button type="submit">返回註冊頁</button>
+        </a>
     </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
         integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
@@ -56,7 +64,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#product_list').DataTable();
+            $('#listmain').DataTable();
         });
 
 
@@ -66,7 +74,7 @@
                 formData.append('_method', 'post');
                 formData.append('_token', '{{ csrf_token() ?? '' }}');
 
-                fetch('/delete' + id, {
+                fetch('/delete/' + id, {
                     method: 'POST',
                     body: formData
                 }).then(function(response) {

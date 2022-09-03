@@ -21,4 +21,8 @@ Route::post('/create',[TestController::class, 'create']);
 
 Route::get('/list',[TestController::class, 'list']);
 
-Route::post('/delete{id}',[TestController::class, 'delete']);
+Route::post('/delete/{id}',[TestController::class, 'delete']);
+
+Route::get('/edit/{id}',[TestController::class, 'edit']);
+
+Route::post('/update/{id}',[TestController::class, 'update']);

@@ -17,7 +17,7 @@ class TestController extends Controller
     public function create(Request $request){
         // dd($request->all());。
         $data = Account_infos::create([
-            'account'=>Str::lower('$request->account'),
+            'account'=>Str::lower($request->account),
             'name'=>$request->name,
             'gender'=>$request->gender,
             'birthday'=>$request->birthday,
@@ -41,6 +41,25 @@ class TestController extends Controller
         $deldata = Account_infos::find($id);
         $deldata->delete();
         return view('list');
+    }
+
+    public function edit($id)
+    {
+        $data = Account_infos::find($id);
+        return view('edit',compact('data'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        Account_infos::where('id',$id)->update([
+            'account'=>Str::lower('$request->account'),
+            'name'=>$request->name,
+            'gender'=>$request->gender,
+            'birthday'=>$request->birthday,
+            'mail'=>$request->mail,
+            'note'=>$request->note,
+        ]);
+        return redirect('/list');
     }
 
     public function __invoke(Request $request)
