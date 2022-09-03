@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./css/list.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 </head>
 
 <body>
@@ -17,63 +16,65 @@
     </nav>
     <main>
         <div>
-            <table id="table" class="display">
+            <table id="product_list" class="display">
                 <thead>
                     <tr>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
+                        <th>帳號</th>
+                        <th>姓名</th>
+                        <th>性別</th>
+                        <th>生日</th>
+                        <th>信箱</th>
+                        <th>備註</th>
+                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Row 1 Data 1</td>
-                        <td>Row 1 Data 2</td>
-                    </tr>
-                    <tr>
-                        <td>Row 2 Data 1</td>
-                        <td>Row 2 Data 2</td>
-                    </tr>
+                    @foreach ($datas as $data)
+                        <tr id='list{{ $data->id }}'>
+                            <td>{{ $data->account ?? '' }}</td>
+                            <td>{{ $data->name ?? '' }}</td>
+                            <td>{{ $data->gender ?? '' }}</td>
+                            <td>{{ $data->birthday ?? '' }}</td>
+                            <td>{{ $data->mail ?? '' }}</td>
+                            <td>{{ $data->note ?? '' }}</td>
+                            <td>
+                                <button class="btn btn-success" onclick="location.href='/product/edit/'">編輯</button>
+                                <button class="delete" onclick="deldata({{ $data->id }})">刪除</button>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
-
-
-            @foreach ($datas as $data)
-                <div class="list">
-                    <div>
-                        <p>帳號</p>
-                        <p>{{ $data->account }}</p>
-                    </div>
-                    <div>
-                        <p>姓名</p>
-                        <p>{{ $data->name }}</p>
-                    </div>
-                    <div>
-                        <p>性別</p>
-                        <p>{{ $data->gender }}</p>
-                    </div>
-                    <div>
-                        <p>生日</p>
-                        <p>{{ $data->birthday }}</p>
-                    </div>
-                    <div>
-                        <p>信箱</p>
-                        <p>{{ $data->mail }}</p>
-                    </div>
-                    <div>
-                        <p>備註</p>
-                        <p>{{ $data->note }}</p>
-                    </div>
-                </div>
-            @endforeach
         </div>
     </main>
     <footer>
         <button type="submit">返回註冊頁</button>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+        integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
     <script>
         $(document).ready(function() {
-            $('#table').DataTable();
+            $('#product_list').DataTable();
         });
+
+
+        function deldata(id) {
+            if (confirm('是否要刪除') == true) {
+                let formData = new FormData();
+                formData.append('_method', 'post');
+                formData.append('_token', '{{ csrf_token() ?? '' }}');
+
+                fetch('/delete' + id, {
+                    method: 'POST',
+                    body: formData
+                }).then(function(response) {
+                    let element = document.querySelector('#list' + id)
+                    element.parentNode.removeChild(element);
+                })
+            }
+        }
     </script>
 </body>
 

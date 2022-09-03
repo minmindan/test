@@ -20,3 +20,5 @@ Route::get('/', function () {
 Route::post('/create',[TestController::class, 'create']);
 
 Route::get('/list',[TestController::class, 'list']);
+
+Route::post('/delete{id}',[TestController::class, 'delete']);

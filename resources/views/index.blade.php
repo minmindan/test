@@ -16,7 +16,7 @@
             <form action="/create" method="post">
                 @csrf
                 <p>帳號</p>
-                <input type="text" name="account">
+                <input type="text" name="account" style="text-transform:lowercase;">
                 <p>姓名</p>
                 <input type="text" name="name">
                 <p>性別</p>
