@@ -11,6 +11,7 @@
 <body>
     <nav>
         <p>人易科技面試前測驗</p>
+        <a href="/list" style="margin-left: 50px"><button>總覽</button></a>
     </nav>
     <main>
         <div>
